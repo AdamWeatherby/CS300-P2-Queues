@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Queue</title>
+  <meta name="Simulator of Queue" content="CS 300 project 2">
+  <!--CSS style section for formatting shapes -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+	.dot {
+	height: 60px;
+	width: 60px;
+	color: white;
+	display: inline-block;
+	background: black;
+	text-align: center;
+	}
+	.head {
+	height: 60px;
+	width: 60px;
+	color: white;
+	display: inline-block;
+	background: green;
+	text-align: center;
+	}
+	.tail {
+	height: 60px;
+	width: 60px;
+	color: white;
+	display: inline-block;
+	background: red;
+	text-align: center;
+	}
+</style>
+	
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+
+</head>
+
+<body>
+
+	<h1 align = "center">Queue Visualizer</h1>
+<!--divs for maniplulating visuals with CSS and JavaScript -->
+	<div id ="nodes" style="text-align:center">
+	<ul>
+		<div id = "header">
+		</div>
+	</ul>
+	</div>
+	
+	<div id ="text">
+		<p id = "p1" align="center">Enter Data Below to fill Queue
+		</p>		
+	</div>
+<!--Buttons -->
+	<div id = "buttons" style= "width:100%; height:100%"align="center">
+		<button id = "Back" onclick="window.location.href = 'https://adamweatherby.github.io/CS300-Project-2/'">Back</button>
+		<button id = "Randomizer" onclick= "random()">Reset</button>
+		<button id = "Adder" onclick= "addElement()">Add Element</button>
+		<button id = "Remover" onclick= "removeElement()">Pop</button>
+		<button id = "Modifier" onclick= "modifyElement()">Change Element</button>
+		<button id = "Searcher" onclick= "searchElement()">Search for Element</button>
+		
+		<br/><br/>
+	</div>
+	<!--Boxes for user inputted data-->
+	<div id = "inputters"style= "width:100%; height:100%"align="right">
+		Input Data(1 or 2 digit numbers only): <input type="text" id="inputBox" value="Number"><br/>
+		Node Selector(0 is Head, 1 is next Node, etc): <input type="text" id="selectionBox" value="Number"><br/>
+		Index of: <input type="text" id="searchBox" value="Number">
+	</div>
+
+</body>
+	<script>
+	<!--initializing variables and calling random(which sends innerHTML to create the Head and Tail-->
+			random();
+			counter = 1;
+			increaser = 0;
+			decreaser = 0;
+	<!--"random" is a placeholder name that was never removed, it resets graph and creates head and tail"-->
+	function random(){
+			increaser = 0;
+			decreaser = 0;
+			document.getElementById("nodes").innerHTML = "<div id = 'header'><li class='head' id = 'head'><br/>Head</li></div><div id = 'footer'><li class='tail' id = 'tail'><br/>Tail</li></div>"
+		}
+	<!--method to add elements to the end of the queue-->
+	function addElement(){
+			<!--increaser is used to keep track of nodes and is also used in some algorithms later-->
+			increaser++;
+			<!--input is taken from user in input box-->
+			var input = document.getElementById("inputBox").value;
+			
+			<!--Inputs data into Tail node and turns it into normal node(not how actual queues work but for the visualiser it works)-->
+			document.getElementById("tail").className = "dot";
+			if(document.getElementById('tail').innerHTML.charAt(1)=='<')
+				document.getElementById("tail").innerHTML = input+"<br/>Node<br/>________";
+			else <!--if else statement makes it so it does not accidnetally put the '<' from innerHTML if the number is single digit-->
+				document.getElementById("tail").innerHTML = input+"<br/>Node<br/>________";
+			document.getElementById("tail").id = "dot"+(increaser);
+			<!--Tail is replaced-->
+			document.getElementById("nodes").innerHTML += "<li class='tail' id = 'tail'><br/>Tail</li><br/>"
+					console.log(document.getElementById("dot"+increaser).innerHTML);
+
+	}
+	<!--method to remove element from head of queue-->
+	function removeElement(){
+			<!--another if else statement for differing amount of digits-->
+			if(document.getElementById("dot"+counter).innerHTML.charAt(1)=='<')
+				window.alert(document.getElementById("dot"+counter).innerHTML.substr(0, 1)+" was removed from the list");
+			else
+				window.alert(document.getElementById("dot"+counter).innerHTML.substr(0, 2)+" was removed from the list");
+			<!--renames id and makes it disappear-->
+			document.getElementById("dot"+counter).id = "removed"+(1+decreaser);
+			document.getElementById("removed"+(1+decreaser)).style.display = "none";
+			<!--decreaser is increased for use in later algorithms-->
+			decreaser++;
+			counter++;
+	}
+	<!--function to change value at specified index-->
+	function modifyElement(){
+			console.log(document.getElementById("nodes").innerHTML);
+			<!--variable that is from user input-->
+			var selection = document.getElementById("selectionBox").value;
+			selection++;
+			
+			<!--so that if items have been removed, function will still work-->
+			selection += decreaser;
+			var input = document.getElementById("inputBox").value;
+			document.getElementById("dot"+(selection)).innerHTML = input+"<br/>Node";
+	}
+	<!--function to find index of specified data-->
+	function searchElement(){
+			<!--variable that takes value user wants to find-->
+			var search = document.getElementById("searchBox").value;
+			var x = (2+decreaser);
+				while(x<(5+(increaser-decreaser))){
+				console.log(increaser);
+				
+				<!--two if statements for different amount of digits, displays results on pop-up window-->
+			console.log(document.getElementById("dot"+(x-1)).innerHTML.substr(0, 2));
+					if(document.getElementById("dot"+(x-1)).innerHTML.charAt(1)=='<'){
+						if(document.getElementById("dot"+(x-1)).innerHTML.substr(0, 1)==search)
+						{
+							window.alert("Value is at arr["+(x-(2+decreaser))+"]");
+						}
+						}
+					if(document.getElementById("dot"+(x-1)).innerHTML.substr(0, 2)==search)
+						{
+							window.alert("Value is at arr["+(x-(2+decreaser))+"]");
+							
+
+						}
+						x++;
+			}
+			}
+	</script>
+
+	<script src="js/scripts.js"></script>
+</html>
